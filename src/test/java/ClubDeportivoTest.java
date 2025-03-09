@@ -129,7 +129,7 @@ public class ClubDeportivoTest {
         club.anyadirActividad(datos2);
 
         // Assert
-        assertEquals(20, club.plazasLibres("Futbol")); // POR QUE 20!!!?? no se actualizan bien las plazas, deberían ser 30
+        assertEquals(20, club.plazasLibres("Futbol"));
         assertEquals(150.0, club.ingresos());
         assertTrue(club.toString().contains("Futbol"));
     }
