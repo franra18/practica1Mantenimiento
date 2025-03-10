@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.StringJoiner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +56,7 @@ public class ClubDeportivoTest {
         assertEquals(0, club.ingresos());
     }
 
+    // Posiblemente comportamiento no esperado
     @Test
     @DisplayName("Constructor con nombre vacio permite crear un club sin nombre")
     public void Constructor_NombreVacio_CreaClubSinNombre() throws ClubException {
@@ -96,7 +99,7 @@ public class ClubDeportivoTest {
     public void AnyadirActividad_DatosPorParametro_AnyadeCorrectamente() throws ClubException {
         //Arrange
         String[] datos = new String[5];
-        datos[0] = "123B";
+        datos[0] = "FUT1";
         datos[1] = "Futbol";
         datos[2] = "22";
         datos[3] = "10";
@@ -116,14 +119,14 @@ public class ClubDeportivoTest {
     public void AnyadirActividad_ActividadDuplicada_ActualizaPlazas() throws ClubException {
         // Arrange
         String[] datos1 = new String[5];
-        datos1[0] = "123B";
+        datos1[0] = "FUT1";
         datos1[1] = "Futbol";
         datos1[2] = "22";
         datos1[3] = "10";
         datos1[4] = "15.0";
         
         String[] datos2 = new String[5];
-        datos2[0] = "123B";
+        datos2[0] = "FUT1";
         datos2[1] = "Futbol";
         datos2[2] = "30"; // Cambiamos el número de plazas
         datos2[3] = "10";
@@ -144,7 +147,7 @@ public class ClubDeportivoTest {
     public void AnyadirActividad_FormatoIncorrecto_LanzaExcepcion() throws ClubException {
         // Arrange
         String[] datosInvalidos = new String[5];
-        datosInvalidos[0] = "123B";
+        datosInvalidos[0] = "FUT1";
         datosInvalidos[1] = "Futbol";
         datosInvalidos[2] = "invalid"; // Esto es un dato inválido
         datosInvalidos[3] = "10"; // es necesario hacer otro test para comprobar este parametro invalido?
@@ -152,6 +155,21 @@ public class ClubDeportivoTest {
 
         // Assert
         assertThrows(ClubException.class, () -> club.anyadirActividad(datosInvalidos));
+    }
+
+    // CORREGIR CODIGO DE CLUB DEPORTIVO, HAY QUE CONTROLAR QUE SE PASEN 5 DATOS EN EL ARRAY DE DATOS
+    @Test
+    @DisplayName("Añadir actividad con menos de 5 datos lanza excepción")
+    public void AnyadirActividad_MenosDeCincoDatos_LanzaExcepcion() throws ClubException {
+        // Arrange
+        String[] datos = new String[4];
+        datos[0] = "FUT1";
+        datos[1] = "Futbol";
+        datos[2] = "22";
+        datos[3] = "10";
+        
+        // Assert
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> club.anyadirActividad(datos));
     }
 
     @Test
@@ -168,7 +186,7 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir grupo válido directamente tiene el comportamiento esperado")
     public void AnyadirActividad_GrupoValido_AnyadeCorrectamente() throws ClubException {
         // Arrange
-        Grupo grupo = new Grupo("456C", "Baloncesto", 15, 5, 20.0);
+        Grupo grupo = new Grupo("BAL2", "Baloncesto", 15, 5, 20.0);
         
         // Act
         club.anyadirActividad(grupo);
@@ -183,8 +201,8 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir grupo duplicado actualiza correctamente las plazas")
     public void AnyadirActividad_GrupoDuplicado_ActualizaPlazas() throws ClubException {
         // Arrange
-        Grupo grupo1 = new Grupo("789D", "Tenis", 10, 8, 25.0);
-        Grupo grupo2 = new Grupo("789D", "Tenis", 20, 8, 25.0);
+        Grupo grupo1 = new Grupo("TEN3", "Tenis", 10, 8, 25.0);
+        Grupo grupo2 = new Grupo("TEN3", "Tenis", 20, 8, 25.0);
         
         // Act
         club.anyadirActividad(grupo1);
@@ -200,22 +218,23 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir grupo con mismo código pero menos plazas que matriculados lanza excepción")
     public void AnyadirActividad_GrupoDuplicadoMenosPlazasQueMatriculados_LanzaExcepcion() throws ClubException {
         // Arrange
-        Grupo grupo1 = new Grupo("ABC1", "Yoga", 15, 10, 30.0);
+        Grupo grupo1 = new Grupo("YOG4", "Yoga", 15, 10, 30.0);
         club.anyadirActividad(grupo1);
         
-        Grupo grupo2 = new Grupo("ABC1", "Yoga", 8, 5, 30.0); // Intenta actualizar a 8 plazas cuando ya hay 10 matriculados
+        Grupo grupo2 = new Grupo("YOG4", "Yoga", 8, 5, 30.0); // Intenta actualizar a 8 plazas cuando ya hay 10 matriculados
         
         // Assert
         assertThrows(ClubException.class, () -> club.anyadirActividad(grupo2));
     }
 
+    // CORREGIR CODIGO DE CLUB DEPORTIVO, HAY QUE CONTROLAR QUE NO SE PUEDAN AÑADIR MÁS GRUPOS DE LOS PERMITIDOS
     @Test
     @DisplayName("Añadir más grupos de los permitidos lanza ArrayIndexOutOfBoundsException")
     public void AnyadirActividad_ExcedeTamanyo_LanzaExcepcion() throws ClubException {
         // Arrange
         ClubDeportivo club = new ClubDeportivo("Club A", 1);
-        Grupo grupo1 = new Grupo("ABC1", "Yoga", 15, 10, 30.0);
-        Grupo grupo2 = new Grupo("789D", "Tenis", 20, 8, 25.0);
+        Grupo grupo1 = new Grupo("YOG4", "Yoga", 15, 10, 30.0);
+        Grupo grupo2 = new Grupo("TEN3", "Tenis", 20, 8, 25.0);
         
         club.anyadirActividad(grupo1);
         
@@ -229,7 +248,7 @@ public class ClubDeportivoTest {
     public void PlazasLibres_ActividadExistente_DevuelvePlazasLibres() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "123B";
+        datos[0] = "FUT1";
         datos[1] = "Futbol";
         datos[2] = "22";
         datos[3] = "10";
@@ -248,7 +267,7 @@ public class ClubDeportivoTest {
     public void PlazasLibres_ActividadInexistente_DevuelveCero() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "123B";
+        datos[0] = "FUT1";
         datos[1] = "Futbol";
         datos[2] = "22";
         datos[3] = "10";
@@ -267,7 +286,7 @@ public class ClubDeportivoTest {
     public void PlazasLibres_ActividadVacia_DevuelveCero() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "123B";
+        datos[0] = "FUT1";
         datos[1] = "Futbol";
         datos[2] = "22";
         datos[3] = "10";
@@ -283,11 +302,11 @@ public class ClubDeportivoTest {
 
     // MATRICULAR
     @Test
-    @DisplayName("Matricular en una actividad existente actualiza el número de matriculados")
-    public void Matricular_ActividadExistente_ActualizaMatriculados() throws ClubException{
+    @DisplayName("Matricular en una actividad existente a menos personas que plazas matricula correctamente")
+    public void Matricular_MenosPersonasQuePlazasLibres_MatriculaCorrectamente() throws ClubException{
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "246E";
+        datos[0] = "PAD5";
         datos[1] = "Padel";
         datos[2] = "10";
         datos[3] = "4";
@@ -305,12 +324,97 @@ public class ClubDeportivoTest {
     }
 
     @Test
+    @DisplayName("Matricular exactamente el número de personas que caben, dejando npersonas=0")
+    public void Matricular_ExactamenteNPersonas_MatriculaTodasPersonas() throws ClubException {
+        // Arrange
+        String[] datos = new String[5];
+        datos[0] = "NAT6";
+        datos[1] = "Natación";
+        datos[2] = "20";
+        datos[3] = "10";
+        datos[4] = "15.0";
+        club.anyadirActividad(datos);
+        
+        // Act
+        club.matricular("Natación", 10);
+        
+        // Assert
+        assertEquals(0, club.plazasLibres("Natación"));
+        assertEquals(300.0, club.ingresos()); //20 * 15.0€
+    }
+
+    @Test
+    @DisplayName("Matricular con número de personas igual a cero no hace cambios")
+    public void Matricular_CeroPersonas_NoHaceCambios() throws ClubException {
+        // Arrange
+        String[] datos = new String[5];
+        datos[0] = "BOX7";
+        datos[1] = "Boxeo";
+        datos[2] = "15";
+        datos[3] = "5";
+        datos[4] = "30.0";
+        club.anyadirActividad(datos);
+        double ingresosAntes = club.ingresos();
+        int plazasLibresAntes = club.plazasLibres("Boxeo");
+        
+        // Act
+        club.matricular("Boxeo", 0);
+        
+        // Assert
+        assertEquals(plazasLibresAntes, club.plazasLibres("Boxeo"));
+        assertEquals(ingresosAntes, club.ingresos());
+    }
+
+    @Test
+    @DisplayName("Matricular con plazas suficientes en total pero distribuidas en varios grupos")
+    public void Matricular_PlazasSuficientesEnTotal_MatriculaCorrectamente() throws ClubException {
+        // Arrange
+        // Dos grupos de Yoga con plazas libres
+        String[] datos1 = {"YOG4", "Yoga", "10", "5", "20.0"};
+        String[] datos2 = {"YOG8", "Yoga", "8", "3", "20.0"};
+        club.anyadirActividad(datos1);
+        club.anyadirActividad(datos2);
+        
+        // Act (Matriculamos más personas que las disponibles en un solo grupo)
+        club.matricular("Yoga", 8); // 5 plazas en primer grupo + 3 en segundo
+        
+        // Assert
+        assertEquals(2, club.plazasLibres("Yoga")); // 10-5=5 libres en grupo 1, 8-5=0 libres en grupo 2
+        assertEquals(320.0, club.ingresos()); // 16 * 20.0€
+    }
+
+    @Test
+    @DisplayName("Matricular cuando hay múltiples actividades y se busca una específica")
+    public void Matricular_MultiplesActividades_MatriculaEnActividadCorrecta() throws ClubException {
+        // Arrange
+        String[] datos1 = {"PIL9", "Pilates", "15", "5", "25.0"};
+        String[] datos2 = {"SP10", "Spinning", "20", "10", "18.0"};
+        String[] datos3 = {"ZU11", "Zumba", "12", "8", "15.0"};
+        
+        club.anyadirActividad(datos1);
+        club.anyadirActividad(datos2);
+        club.anyadirActividad(datos3);
+        
+        // Act
+        club.matricular("Spinning", 5);
+        
+        // Assert
+        assertEquals(10, club.plazasLibres("Pilates")); // No cambió
+        assertEquals(5, club.plazasLibres("Spinning")); // Se matricularon 5 personas
+        assertEquals(4, club.plazasLibres("Zumba")); // No cambió
+        
+        // Calculamos los ingresos totales esperados
+        double ingresosEsperados = (5 * 25.0) + (15 * 18.0) + (8 * 15.0);
+        assertEquals(ingresosEsperados, club.ingresos());
+    }
+
+    @Test
     @DisplayName("Matricular en una actividad existente a más personas que plazas libres lanza excepción")
     public void Matricular_MasPersonasQuePlazasLibres_LanzaExcepcion() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "579F";
-        datos[1] = "Natación";
+        datos[0] = "AT12";
+        datos[1] = "Atletismo";
         datos[2] = "12";
         datos[3] = "6";
         datos[4] = "9.0";
@@ -325,7 +429,7 @@ public class ClubDeportivoTest {
     public void Matricular_ActividadInexistente_LanzaExcepcion() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "246E";
+        datos[0] = "PAD5";
         datos[1] = "Padel";
         datos[2] = "10";
         datos[3] = "4";
@@ -341,8 +445,8 @@ public class ClubDeportivoTest {
     public void Matricular_ActividadVacia_LanzaExcepcion() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "579F";
-        datos[1] = "Natación";
+        datos[0] = "AT12";
+        datos[1] = "Atletismo";
         datos[2] = "12";
         datos[3] = "6";
         datos[4] = "9.0";
@@ -360,7 +464,7 @@ public class ClubDeportivoTest {
     public void Matricular_Negativo_LanzaExcepcion() throws ClubException {
         // Arrange
         String[] datos = new String[5];
-        datos[0] = "246E";
+        datos[0] = "PAD5";
         datos[1] = "Padel";
         datos[2] = "10";
         datos[3] = "4";
@@ -372,13 +476,80 @@ public class ClubDeportivoTest {
     }
     */
 
-    // FALTAN RAMAS POR TESTEAR EN MATRICULAR
-
     // INGRESOS
     @Test
     @DisplayName("Ingresos de un club sin actividades es 0")
     public void Ingresos_SinActividades_Cero() {
         // Assert
         assertEquals(0, club.ingresos());
+    }
+
+    @Test
+    @DisplayName("Ingresos de un club con actividades es la suma de las tarifas de los matriculados")
+    public void Ingresos_ConActividades_SumaTarifas() throws ClubException {
+        // Arrange
+        String[] datos1 = new String[5];
+        datos1[0] = "FUT1";
+        datos1[1] = "Futbol";
+        datos1[2] = "22";
+        datos1[3] = "11";
+        datos1[4] = "15.0";
+        
+        String[] datos2 = new String[5];
+        datos2[0] = "BAL2";
+        datos2[1] = "Baloncesto";
+        datos2[2] = "15";
+        datos2[3] = "5";
+        datos2[4] = "20.0";
+        
+        club.anyadirActividad(datos1);
+        club.anyadirActividad(datos2);
+        
+        // Act
+        double ingresos = club.ingresos();
+        
+        // Assert
+        assertEquals(165.0 + 100.0, ingresos);
+    }
+
+    // TO_STRING
+    @Test
+    @DisplayName("toString de un club sin actividades devuelve el nombre del club y una lista vacía")
+    public void ToString_SinActividades_NombreClubYListaVacia() {
+        // Assert
+        assertEquals("Club A --> [  ]", club.toString());
+    }
+
+    @Test
+    @DisplayName("toString de un club con actividades devuelve el formato exacto esperado")
+    public void ToString_ConActividades_FormatoExacto() throws ClubException {
+        // Arrange
+        Grupo grupo1 = new Grupo("FUT1", "Futbol", 22, 11, 15.0);
+        Grupo grupo2 = new Grupo("BAL2", "Baloncesto", 15, 5, 20.0);
+        
+        club.anyadirActividad(grupo1);
+        club.anyadirActividad(grupo2);
+        
+        // Preparar la salida esperada
+        Grupo[] grupos = new Grupo[]{grupo1, grupo2};
+        String esperado = construirSalidaEsperada("Club A", grupos);
+        
+        // Act
+        String resultado = club.toString();
+        
+        // Assert
+        assertEquals(esperado, resultado);
+    }
+
+    private String construirSalidaEsperada(String nombreClub, Grupo[] grupos) {
+        StringJoiner sj = new StringJoiner(", ", "[ ", " ]");
+        
+        for (Grupo g : grupos) {
+            if (g != null) {
+                sj.add(g.toString());
+            }
+        }
+        
+        return nombreClub + " --> " + sj.toString();
     }
 }
