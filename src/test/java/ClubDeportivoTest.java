@@ -1,3 +1,5 @@
+// Grupo formado por Francisco Ramírez Cañadas y Jorge Repullo Serrano
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

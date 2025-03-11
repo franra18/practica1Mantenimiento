@@ -1,3 +1,5 @@
+// Grupo formado por Francisco Ramírez Cañadas y Jorge Repullo Serrano
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,26 +13,7 @@ import clubdeportivo.ClubException;
 import clubdeportivo.Grupo;
 
 public class GrupoTest {
-    /*
-     * Para nombrar un test, debo seguir la estructura
-     * [MethodUnderTest]_[Scenario]_[ExpectedResult]
-     * Scenario es la condición sobre la que se prueba
-     * Ejemplo para la suma de dos números en el método Suma: public void
-     * Sum_TwoNumbers_ReturnsSum()
-     * 
-     * Los tests deben seguir el patron AAA:
-     * Arrange: preparar el estado del código a probar
-     * · Crear objetos
-     * · Inicializar variables
-     * Act: ejecutar la lógica del sistema a probar
-     * Assert: ejecutar las pruebas y comprobar si hay errores
-     * 
-     * En el assert, primero aparece el valor esperado por la prueba, después el
-     * calculado por el código;
-     * si todo va bien deben ser iguales
-     * 
-     */
-
+    
     // CONSTRUCTOR
 
     @Test
