@@ -100,12 +100,7 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir actividad mediante datos tiene el comportamiento esperado")
     public void AnyadirActividad_DatosPorParametro_AnyadeCorrectamente() throws ClubException {
         //Arrange
-        String[] datos = new String[5];
-        datos[0] = "FUT1";
-        datos[1] = "Futbol";
-        datos[2] = "22";
-        datos[3] = "10";
-        datos[4] = "15.0";
+        String[] datos = {"FUT1", "Futbol", "22", "10", "15.0"};
         
         //Act
         club.anyadirActividad(datos);
@@ -120,19 +115,8 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir actividad duplicada actualiza correctamente las plazas")
     public void AnyadirActividad_ActividadDuplicada_ActualizaPlazas() throws ClubException {
         // Arrange
-        String[] datos1 = new String[5];
-        datos1[0] = "FUT1";
-        datos1[1] = "Futbol";
-        datos1[2] = "22";
-        datos1[3] = "10";
-        datos1[4] = "15.0";
-        
-        String[] datos2 = new String[5];
-        datos2[0] = "FUT1";
-        datos2[1] = "Futbol";
-        datos2[2] = "30"; // Cambiamos el número de plazas
-        datos2[3] = "10";
-        datos2[4] = "15.0";
+        String[] datos1 = {"FUT1", "Futbol", "22", "10", "15.0"};
+        String[] datos2 = {"FUT1", "Futbol", "30", "10", "15.0"};
         
         // Act
         club.anyadirActividad(datos1);
@@ -148,30 +132,21 @@ public class ClubDeportivoTest {
     @DisplayName("Añadir actividad con formato de datos incorrecto lanza excepción")
     public void AnyadirActividad_FormatoIncorrecto_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datosInvalidos = new String[5];
-        datosInvalidos[0] = "FUT1";
-        datosInvalidos[1] = "Futbol";
-        datosInvalidos[2] = "invalid"; // Esto es un dato inválido
-        datosInvalidos[3] = "10"; // es necesario hacer otro test para comprobar este parametro invalido?
-        datosInvalidos[4] = "15.0";
+        String[] datosInvalidos = {"FUT1", "Futbol", "invalid", "10", "15.0"};
 
         // Assert
         assertThrows(ClubException.class, () -> club.anyadirActividad(datosInvalidos));
     }
 
-    // CORREGIR CODIGO DE CLUB DEPORTIVO, HAY QUE CONTROLAR QUE SE PASEN 5 DATOS EN EL ARRAY DE DATOS
+    // CORREGIDO CODIGO DE CLUB DEPORTIVO, AHORA SE CONTROLA QUE SE PASEN 5 DATOS EN EL ARRAY DE DATOS
     @Test
     @DisplayName("Añadir actividad con menos de 5 datos lanza excepción")
     public void AnyadirActividad_MenosDeCincoDatos_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datos = new String[4];
-        datos[0] = "FUT1";
-        datos[1] = "Futbol";
-        datos[2] = "22";
-        datos[3] = "10";
+        String[] datos = {"FUT1", "Futbol", "22", "10"};
         
         // Assert
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> club.anyadirActividad(datos));
+        assertThrows(ClubException.class, () -> club.anyadirActividad(datos));
     }
 
     @Test
@@ -229,7 +204,7 @@ public class ClubDeportivoTest {
         assertThrows(ClubException.class, () -> club.anyadirActividad(grupo2));
     }
 
-    // CORREGIR CODIGO DE CLUB DEPORTIVO, HAY QUE CONTROLAR QUE NO SE PUEDAN AÑADIR MÁS GRUPOS DE LOS PERMITIDOS
+    // CORREGIDO CODIGO DE CLUB DEPORTIVO, SE CONTROLA QUE NO SE PUEDAN AÑADIR MÁS GRUPOS DE LOS PERMITIDOS
     @Test
     @DisplayName("Añadir más grupos de los permitidos lanza ArrayIndexOutOfBoundsException")
     public void AnyadirActividad_ExcedeTamanyo_LanzaExcepcion() throws ClubException {
@@ -241,7 +216,7 @@ public class ClubDeportivoTest {
         club.anyadirActividad(grupo1);
         
         // Assert
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> club.anyadirActividad(grupo2));
+        assertThrows(ClubException.class, () -> club.anyadirActividad(grupo2));
     }
 
     // PLAZAS_LIBRES
@@ -249,12 +224,7 @@ public class ClubDeportivoTest {
     @DisplayName("Plazas libres de una actividad existente devuelve el número de plazas libres")
     public void PlazasLibres_ActividadExistente_DevuelvePlazasLibres() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "FUT1";
-        datos[1] = "Futbol";
-        datos[2] = "22";
-        datos[3] = "10";
-        datos[4] = "15.0";
+        String[] datos = {"FUT1", "Futbol", "22", "10", "15.0"};
         club.anyadirActividad(datos);
         
         // Act
@@ -268,12 +238,7 @@ public class ClubDeportivoTest {
     @DisplayName("Plazas libres de una actividad inexistente devuelve 0")
     public void PlazasLibres_ActividadInexistente_DevuelveCero() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "FUT1";
-        datos[1] = "Futbol";
-        datos[2] = "22";
-        datos[3] = "10";
-        datos[4] = "15.0";
+        String[] datos = {"FUT1", "Futbol", "22", "10", "15.0"};
         club.anyadirActividad(datos);
         
         // Act
@@ -287,12 +252,7 @@ public class ClubDeportivoTest {
     @DisplayName("Plazas libres de una actividad con nombre vacío devuelve 0")
     public void PlazasLibres_ActividadVacia_DevuelveCero() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "FUT1";
-        datos[1] = "Futbol";
-        datos[2] = "22";
-        datos[3] = "10";
-        datos[4] = "15.0";
+        String[] datos = {"FUT1", "Futbol", "22", "10", "15.0"};
         club.anyadirActividad(datos);
         
         // Act
@@ -307,12 +267,7 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular en una actividad existente a menos personas que plazas matricula correctamente")
     public void Matricular_MenosPersonasQuePlazasLibres_MatriculaCorrectamente() throws ClubException{
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "PAD5";
-        datos[1] = "Padel";
-        datos[2] = "10";
-        datos[3] = "4";
-        datos[4] = "6.0";
+        String[] datos = {"PAD5", "Padel", "10", "4", "6.0"};
         club.anyadirActividad(datos);
         int plazasLibresAntes = club.plazasLibres("Padel");
         double ingresosAntes = club.ingresos();
@@ -329,12 +284,7 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular exactamente el número de personas que caben, dejando npersonas=0")
     public void Matricular_ExactamenteNPersonas_MatriculaTodasPersonas() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "NAT6";
-        datos[1] = "Natación";
-        datos[2] = "20";
-        datos[3] = "10";
-        datos[4] = "15.0";
+        String[] datos = {"NAT6", "Natación", "20", "10", "15.0"};
         club.anyadirActividad(datos);
         
         // Act
@@ -349,12 +299,7 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular con número de personas igual a cero no hace cambios")
     public void Matricular_CeroPersonas_NoHaceCambios() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "BOX7";
-        datos[1] = "Boxeo";
-        datos[2] = "15";
-        datos[3] = "5";
-        datos[4] = "30.0";
+        String[] datos = {"BOX7", "Boxeo", "15", "5", "30.0"};
         club.anyadirActividad(datos);
         double ingresosAntes = club.ingresos();
         int plazasLibresAntes = club.plazasLibres("Boxeo");
@@ -414,12 +359,7 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular en una actividad existente a más personas que plazas libres lanza excepción")
     public void Matricular_MasPersonasQuePlazasLibres_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "AT12";
-        datos[1] = "Atletismo";
-        datos[2] = "12";
-        datos[3] = "6";
-        datos[4] = "9.0";
+        String[] datos = {"PAD5", "Padel", "10", "4", "6.0"};
         club.anyadirActividad(datos);
         
         // Assert
@@ -430,12 +370,7 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular en una actividad inexistente lanza excepción")
     public void Matricular_ActividadInexistente_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "PAD5";
-        datos[1] = "Padel";
-        datos[2] = "10";
-        datos[3] = "4";
-        datos[4] = "6.0";
+        String[] datos = {"PAD5", "Padel", "10", "4", "6.0"};
         club.anyadirActividad(datos);
         
         // Assert
@@ -446,37 +381,26 @@ public class ClubDeportivoTest {
     @DisplayName("Matricular en una actividad con nombre vacío lanza excepción")
     public void Matricular_ActividadVacia_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "AT12";
-        datos[1] = "Atletismo";
-        datos[2] = "12";
-        datos[3] = "6";
-        datos[4] = "9.0";
+        String[] datos = {"AT12", "Atletismo", "12", "6", "9.0"};
         club.anyadirActividad(datos);
         
         // Assert
         assertThrows(ClubException.class, () -> club.matricular("", 5));
     }
 
-    /* 
-    // ESTE TEST NO PASA PORQUE NO SE CONTROLA QUE npersonas EN MATRICULAR SEA NEGATIVO
+    // ESTE TEST NO PASABA PORQUE NO SE CONTROLA QUE npersonas EN MATRICULAR SEA NEGATIVO
     // LLEGA AL BUCLE WHILE DE LA FUNCIÓN Y COMO npersonas NO ES MAYOR QUE 0 SIMPLEMENTE TERMINA
     @Test
     @DisplayName("Matricular en una actividad con número de personas negativo lanza excepción")
     public void Matricular_Negativo_LanzaExcepcion() throws ClubException {
         // Arrange
-        String[] datos = new String[5];
-        datos[0] = "PAD5";
-        datos[1] = "Padel";
-        datos[2] = "10";
-        datos[3] = "4";
-        datos[4] = "6.0";
+        String[] datos = {"PAD5", "Padel", "10", "4", "6.0"};
         club.anyadirActividad(datos);
         
         // Assert
         assertThrows(ClubException.class, () -> club.matricular("Padel", -5));
     }
-    */
+
 
     // INGRESOS
     @Test
@@ -490,19 +414,8 @@ public class ClubDeportivoTest {
     @DisplayName("Ingresos de un club con actividades es la suma de las tarifas de los matriculados")
     public void Ingresos_ConActividades_SumaTarifas() throws ClubException {
         // Arrange
-        String[] datos1 = new String[5];
-        datos1[0] = "FUT1";
-        datos1[1] = "Futbol";
-        datos1[2] = "22";
-        datos1[3] = "11";
-        datos1[4] = "15.0";
-        
-        String[] datos2 = new String[5];
-        datos2[0] = "BAL2";
-        datos2[1] = "Baloncesto";
-        datos2[2] = "15";
-        datos2[3] = "5";
-        datos2[4] = "20.0";
+        String[] datos1 = {"FUT1", "Futbol", "22", "11", "15.0"};
+        String[] datos2 = {"BAL2", "Baloncesto", "15", "5", "20.0"};
         
         club.anyadirActividad(datos1);
         club.anyadirActividad(datos2);
