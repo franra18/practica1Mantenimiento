@@ -206,10 +206,10 @@ public class ClubDeportivoTest {
 
     // CORREGIDO CODIGO DE CLUB DEPORTIVO, SE CONTROLA QUE NO SE PUEDAN AÑADIR MÁS GRUPOS DE LOS PERMITIDOS
     @Test
-    @DisplayName("Añadir más grupos de los permitidos lanza ArrayIndexOutOfBoundsException")
+    @DisplayName("Añadir más grupos de los permitidos lanza excepción")
     public void AnyadirActividad_ExcedeTamanyo_LanzaExcepcion() throws ClubException {
         // Arrange
-        ClubDeportivo club = new ClubDeportivo("Club A", 1);
+        ClubDeportivo club = new ClubDeportivo("Club B", 1);
         Grupo grupo1 = new Grupo("YOG4", "Yoga", 15, 10, 30.0);
         Grupo grupo2 = new Grupo("TEN3", "Tenis", 20, 8, 25.0);
         
@@ -217,6 +217,22 @@ public class ClubDeportivoTest {
         
         // Assert
         assertThrows(ClubException.class, () -> club.anyadirActividad(grupo2));
+    }
+
+    @Test
+    @DisplayName("Añadir grupo duplicado cuando se ha alcanzado la capacidad no lanza excepción")
+    public void AnyadirActividad_GrupoDuplicadoCapacidadLlena_ActualizaPlazas() throws ClubException {
+        // Arrange
+        ClubDeportivo club = new ClubDeportivo("Club B", 1);
+        Grupo grupo1 = new Grupo("YOG4", "Yoga", 15, 10, 30.0);
+        club.anyadirActividad(grupo1);
+        Grupo grupo1Modificado = new Grupo("YOG4", "Yoga", 20, 10, 30.0);
+        
+        // Act
+        club.anyadirActividad(grupo1Modificado);
+        
+        // Verificamos que las plazas se actualizaron
+        assertEquals(10, club.plazasLibres("Yoga"));
     }
 
     // PLAZAS_LIBRES
