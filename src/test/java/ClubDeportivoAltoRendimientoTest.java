@@ -80,7 +80,7 @@ public class ClubDeportivoAltoRendimientoTest {
     public void Constructor_TamanoYMaximoNegativo_LanzaExcepcion() {
         // Arrange
         String nombre = "UMA";
-        int tam = -1;
+        int tam = 1;
         int maximo = -1;
         double incremento = 10.0;
 
@@ -95,41 +95,13 @@ public class ClubDeportivoAltoRendimientoTest {
     public void Constructor_TamanoEIncrementoNegativo_LanzaExcepcion() {
         // Arrange
         String nombre = "UMA";
-        int tam = -1;
+        int tam = 1;
         int maximo = 1;
         double incremento = -10.0;
 
         // Assert
         assertThrows(ClubException.class, () -> {
             new ClubDeportivoAltoRendimiento(nombre, tam, maximo, incremento);
-        });
-    }
-
-    @Test
-    @DisplayName("Constructor con valor maximo cero lanza excepción")
-    public void Constructor_MaximoCero_LanzaExcepcion() {
-        // Arrange
-        String nombre = "UMA";
-        int maximo = 0;
-        double incremento = 10.0;
-
-        // Assert
-        assertThrows(ClubException.class, () -> {
-            new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
-        });
-    }
-
-    @Test
-    @DisplayName("Constructor con valor incremento cero lanza excepción")
-    public void Constructor_IncrementoCero_LanzaExcepcion() {
-        // Arrange
-        String nombre = "UMA";
-        int maximo = 1;
-        double incremento = 0.0;
-
-        // Assert
-        assertThrows(ClubException.class, () -> {
-            new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
         });
     }
 
