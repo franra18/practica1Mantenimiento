@@ -80,7 +80,7 @@ public class ClubDeportivoAltoRendimientoTest {
     public void Constructor_TamanoYMaximoNegativo_LanzaExcepcion() {
         // Arrange
         String nombre = "UMA";
-        int tam = 1;
+        int tam = -1;
         int maximo = -1;
         double incremento = 10.0;
 
@@ -95,13 +95,41 @@ public class ClubDeportivoAltoRendimientoTest {
     public void Constructor_TamanoEIncrementoNegativo_LanzaExcepcion() {
         // Arrange
         String nombre = "UMA";
-        int tam = 1;
+        int tam = -1;
         int maximo = 1;
         double incremento = -10.0;
 
         // Assert
         assertThrows(ClubException.class, () -> {
             new ClubDeportivoAltoRendimiento(nombre, tam, maximo, incremento);
+        });
+    }
+
+    @Test
+    @DisplayName("Constructor con valor maximo cero lanza excepción")
+    public void Constructor_MaximoCero_LanzaExcepcion() {
+        // Arrange
+        String nombre = "UMA";
+        int maximo = 0;
+        double incremento = 10.0;
+
+        // Assert
+        assertThrows(ClubException.class, () -> {
+            new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
+        });
+    }
+
+    @Test
+    @DisplayName("Constructor con valor incremento cero lanza excepción")
+    public void Constructor_IncrementoCero_LanzaExcepcion() {
+        // Arrange
+        String nombre = "UMA";
+        int maximo = 1;
+        double incremento = 0.0;
+
+        // Assert
+        assertThrows(ClubException.class, () -> {
+            new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
         });
     }
 
@@ -162,6 +190,45 @@ public class ClubDeportivoAltoRendimientoTest {
         });
     }
 
+    @Test
+    @DisplayName("Añadir actividad con matriculados mayor que plazas lanza excepción")
+    public void AnyadirActividad_MatriculadosMayorQuePlazas_LanzaExcepcion() throws ClubException {
+        // Arrange
+        ClubDeportivoAltoRendimiento club = new ClubDeportivoAltoRendimiento("UMA", 5, 10.0);
+        String[] datos = { "123A", "Natacion", "3", "5", "30.0" };
+
+        // Assert
+        assertThrows(ClubException.class, () -> {
+            club.anyadirActividad(datos);
+        });
+    }
+
+    @Test
+    @DisplayName("Añadir actividad con tarifa negativa lanza excepción")
+    public void AnyadirActividad_TarifaNegativa_LanzaExcepcion() throws ClubException {
+        // Arrange
+        ClubDeportivoAltoRendimiento club = new ClubDeportivoAltoRendimiento("UMA", 5, 10.0);
+        String[] datos = { "123A", "Natacion", "5", "3", "-30.0" };
+
+        // Assert
+        assertThrows(ClubException.class, () -> {
+            club.anyadirActividad(datos);
+        });
+    }
+
+    @Test
+    @DisplayName("Añadir actividad con matriculados negativos lanza excepción")
+    public void AnyadirActividad_MatriculadosNegativos_LanzaExcepcion() throws ClubException {
+        // Arrange
+        ClubDeportivoAltoRendimiento club = new ClubDeportivoAltoRendimiento("UMA", 5, 10.0);
+        String[] datos = { "123A", "Natacion", "5", "-3", "30.0" };
+
+        // Assert
+        assertThrows(ClubException.class, () -> {
+            club.anyadirActividad(datos);
+        });
+    }
+
     // INGRESOS
     @Test
     @DisplayName("ingresos devuelve el total de ingresos del club correctamente")
@@ -176,5 +243,24 @@ public class ClubDeportivoAltoRendimientoTest {
 
         // Assert
         assertEquals(99, ingresos);
+    }
+
+    @Test
+    @DisplayName("Ingresos con múltiples actividades calcula correctamente")
+    public void Ingresos_MultiplesActividades_CalculaCorrectamente() throws ClubException {
+        // Arrange
+        ClubDeportivoAltoRendimiento club = new ClubDeportivoAltoRendimiento("UMA", 5, 10.0);
+        String[] datos1 = { "123A", "Natacion", "5", "3", "30.0" };
+        String[] datos2 = { "456B", "Futbol", "5", "2", "20.0" };
+        club.anyadirActividad(datos1);
+        club.anyadirActividad(datos2);
+
+        // Act
+        double ingresos = club.ingresos();
+
+        // Assert
+        // 3 matriculados a 30.0 + 2 matriculados a 20.0 = 90.0 + 40.0 = 130.0
+        // 130.0 + 130.0 * (10.0/100) = 130.0 + 13.0 = 143.0
+        assertEquals(143.0, ingresos);
     }
 }
